@@ -10,7 +10,15 @@ export class LoginComponent {
 
   constructor(private router: Router) { }
 
-  ingresar() {
+  usuario: string = '';
+  clave: string = '';
+  showPassword: boolean = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  login() {
     this.router.navigate(['/']);
   }
 

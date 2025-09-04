@@ -1,0 +1,39 @@
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+  <div class="p-4 border rounded shadow text-center" style="max-width: 400px; width: 100%; background-color: #ccc;">
+
+    <div class=" mb-4">
+      <img src="assets/img/pez-soft.png" alt="pezsoft-logo" class="img-fluid"
+        style="max-height: 20vh; object-fit: contain;" />
+    </div>
+
+    <div class="h3 mb-4">Iniciar sesión</div>
+
+    <form (ngSubmit)="login()">
+      <div class="mb-3 text-start">
+        <label for="usuario">Usuario<strong>*</strong></label>
+        <input type="text" id="usuario" name="usuario" class="form-control" placeholder="Ingresa tu usuario" />
+      </div>
+      <div class="mb-3 text-start">
+        <label for="clave" class="form-label">Contraseña</label>
+        <div class="input-group">
+          <input [type]="showPassword ? 'text' : 'password'" id="clave" name="clave" class="form-control"
+            [(ngModel)]="clave" placeholder="Ingresa tu contraseña" required />
+
+          <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility()">
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="dropdownCheck">
+        <label class="form-check-label" for="dropdownCheck">Recordar este correo</label>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+    </form>
+
+    <div class="text-center mt-3">
+      <a href="#">¿Olvidaste tu contraseña?</a>
+    </div>
+  </div>
+</div>
