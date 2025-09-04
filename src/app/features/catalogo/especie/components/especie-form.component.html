@@ -1,0 +1,18 @@
+<div class="p-3">
+    <form [formGroup]="especieForm" (ngSubmit)="onSubmit()">
+
+        <div class="row mb-3 align-items-center">
+            <label for="especie" class="col-sm-3 col-form-label">Especie</label>
+            <div class="col-auto">
+                <input type="text" id="especie" class="form-control" formControlName="especie" >
+                <div *ngIf="especieForm.get('especie')?.invalid && especieForm.get('especie')?.touched"
+                    class="text-danger">
+                    El campo es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success me-2" [disabled]="especieForm.invalid">Guardar</button>
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
+    </form>
+</div>
