@@ -1,0 +1,12 @@
+.logo-container {
+  height: 100px;      
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-logo {
+  max-height: 120%;
+  max-width: 100%;
+  object-fit: contain;
+}

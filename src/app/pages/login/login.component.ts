@@ -19,7 +19,7 @@ export class LoginComponent {
   }
 
   login() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/inicio']);
   }
 
 }

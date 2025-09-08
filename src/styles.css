@@ -1,1 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  background: linear-gradient(135deg, rgba(13, 110, 253, 1) 0%, rgba(148, 172, 233, 1) 50%, rgba(248, 249, 250, 1) 100%);
+}

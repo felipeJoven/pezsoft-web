@@ -1,0 +1,13 @@
+<div class="app-layout d-flex flex-column vh-100">
+    <app-header></app-header>
+
+    <div class="d-flex flex-grow-1">
+        <app-sidenav></app-sidenav>
+
+        <main class="flex-grow-1 p-3">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+
+    <app-footer></app-footer>
+</div>

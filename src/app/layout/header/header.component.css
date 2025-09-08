@@ -1,0 +1,17 @@
+.fixed-navbar {
+  height: 50px;          
+  display: flex;
+  align-items: center;   
+  justify-content: space-between; 
+}
+
+.login-logo {
+  height: 50px;  
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-text {  
+  font-weight: bold;
+  font-size: 1.8rem;  
+}
