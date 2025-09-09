@@ -41,7 +41,7 @@ export class SidenavComponent implements OnInit {
   constructor(private menuService: MenuService) { }
 
   ngOnInit(): void {
-    this.menuService.obtenerMenu('administrador').subscribe({
+    this.menuService.obtenerMenu('usuario').subscribe({
       next: (items) => {
         console.log("Menú: ", items);
         items.forEach(child => {
@@ -61,10 +61,26 @@ export class SidenavComponent implements OnInit {
 
   toggleCollapse() {
     this.collapsed = !this.collapsed;
+
+    if (this.collapsed) {
+    this.menuItems.forEach(item => {
+      item.expanded = false;
+      if (item.children) {
+        item.children.forEach(child => (child.expanded = false));
+      }
+    });
+  }
   }
 
-  toggleSubmenu(item: MenuItem) {
-    if (!item.children) return;
-    item.expanded = !item.expanded
+  toggleSubmenu(item: MenuItem): void {
+    if (this.collapsed) {
+      this.collapsed = false;
+    }
+
+    item.expanded = !item.expanded;
+
+    if (!item.expanded && item.children) {
+      item.children.forEach(child => (child.expanded = false));
+    }
   }
 }

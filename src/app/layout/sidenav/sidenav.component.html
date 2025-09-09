@@ -1,20 +1,19 @@
 <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
-  <!-- Logo -->
+  
   <div class="sidenav-container">
     <button class="name" (click)="toggleCollapse()">FJ</button>
     <div *ngIf="!collapsed" class="full-name">Felipe Joven</div>
   </div>
-
-  <!-- Menú -->
-  <ul class="sidenav-nav">
+  
+  <ul class="sidenav-nav" >
     <li *ngFor="let item of menuItems" class="sidenav-nav-item">
-      <!-- Item principal sin submenu -->
+      
       <a *ngIf="!item.children" [routerLink]="item.routerLink" routerLinkActive="active">
         <i *ngIf="item.icon" class="{{ item.icon }}"></i>
         <span *ngIf="!collapsed">{{ item.label }}</span>
       </a>
 
-      <!-- Item con submenu -->
+      
       <div *ngIf="item.children">
         <span class="menu-parent" (click)="toggleSubmenu(item)">
           <i *ngIf="item.icon" class="{{ item.icon }}"></i>
