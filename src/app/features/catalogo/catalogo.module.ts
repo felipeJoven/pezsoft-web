@@ -5,8 +5,7 @@ import { CatalogoRoutingModule } from './catalogo-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     ReactiveFormsModule,

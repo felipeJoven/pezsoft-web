@@ -19,14 +19,13 @@
                 <td>{{ especie.fechaCreacion }}</td>
                 <td>
                     <app-btn-editar (clickEvent)="openModal(especie)"></app-btn-editar>
-                    <app-btn-eliminar (clickEvent)="eliminarEspecie(especie.id)"></app-btn-eliminar>
+                    <app-btn-eliminar (clickEvent)="borrarEspecie(especie.id)"></app-btn-eliminar>
                 </td>
             </tr>
         </tbody>
     </table>
 </div>
 
-<!-- Modal reutilizable -->
 <app-modal [show]="showModal" [title]="selectedEspecie ? 'Editar especie' : 'Agregar especie'" (closed)="closeModal()">
 
     <app-especie-form [especie]="selectedEspecie" (guardado)="onSave()" (cancelar)="closeModal()">

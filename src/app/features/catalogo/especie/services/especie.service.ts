@@ -20,15 +20,15 @@ export class EspecieService {
     return this.http.get<Especie>(this.apiUrl + `/${id}`);
   }
 
- guardarEspecie(postData: Especie, id?: number){  
-    if(!id){
+  guardarEspecie(postData: Especie, id?: number) {
+    if (!id) {
       return this.http.post<Especie>(this.apiUrl, postData);
-    }else{
+    } else {
       return this.http.put<Especie>(this.apiUrl + `/${id}`, postData);
     }
   }
 
-  eliminarEspecie(id: number): Observable<void>{
+  eliminarEspecie(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

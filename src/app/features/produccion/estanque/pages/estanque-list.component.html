@@ -1,0 +1,51 @@
+<div class="container mt-4">
+    <div class="justify-content-between">
+        <div class="h1 bg-gray-500 border-3 border-gray-400">Lista de Estanques</div>
+    </div>
+
+    <app-btn-agregar (click)="openModal()"></app-btn-agregar>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tipo de estanque</th>
+                <th>Nombre del estanque</th>
+                <th>Coordenadas</th>
+                <th>Largo</th>
+                <th>Ancho</th>
+                <th>Área</th>
+                <th>Profundidad</th>
+                <th>Estado</th>
+                <th>Fecha de creación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let estanque of estanques">
+                <td>{{ estanque.tipoEstanque }}</td>
+                <td>{{ estanque.estanque }}</td>
+                <td>{{ estanque.coordenadas }}</td>
+                <td>{{ estanque.largo | comaDecimal }} mts</td>
+                <td>{{ estanque.ancho | comaDecimal }} mts</td>
+                <td>{{ estanque.area | comaDecimal }} m<sup>2</sup></td>
+                <td>{{ estanque.profundidad | comaDecimal }} mts</td>
+                <td>
+                    <span class="badge" [ngClass]="estanque.estado ? 'bg-danger' : 'bg-success'">
+                        {{ estanque.estado ? 'Ocupado' : 'Disponible' }}
+                    </span>
+                </td>
+                <td>{{ estanque.fechaCreacion }}</td>
+                <td>
+                    <app-btn-editar (clickEvent)="openModal(estanque)"></app-btn-editar>
+                    <app-btn-eliminar (clickEvent)="borrarEstanque(estanque.id)"></app-btn-eliminar>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<app-modal [show]="showModal" [title]="selectedEstanque ? 'Editar estanque' : 'Agregar estanque'" (closed)="closeModal()">
+
+    <app-estanque-form [estanque]="selectedEstanque" (guardado)="onSave()" (cancelar)="closeModal()">
+    </app-estanque-form>
+</app-modal>

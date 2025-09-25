@@ -6,7 +6,7 @@ import { EspecieService } from '../services/especie.service';
 @Component({
   selector: 'app-especie-form',
   templateUrl: './especie-form.component.html',
-  styleUrl: './especie-form.component.css'
+  styleUrls: ['./especie-form.component.css']
 })
 export class EspecieFormComponent implements OnChanges {
 
@@ -19,8 +19,7 @@ export class EspecieFormComponent implements OnChanges {
   constructor(private fb: FormBuilder, private especieService: EspecieService) {
     this.especieForm = this.fb.group({
       especie: ['', Validators.required]
-    })
-
+    });
   }
 
    ngOnChanges(changes: SimpleChanges): void {
@@ -34,11 +33,11 @@ export class EspecieFormComponent implements OnChanges {
   onSubmit(): void {
     if (this.especieForm.valid) {
       const formValue = this.especieForm.value;
-      const id = this.especie ? this.especie.id : undefined;
+      const id = this.especie?.id;
 
       this.especieService.guardarEspecie(formValue, id).subscribe({
         next: () => this.guardado.emit(),
-        error: (err) => console.error('Error guardando especie', err)
+        error: (e) => console.error('Error guardando especie: ', e)
       });
     }
   }

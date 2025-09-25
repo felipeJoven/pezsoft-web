@@ -8,6 +8,7 @@
       "schematics": {
         "@schematics/angular:component": {
           "standalone": false,
+          "style": "css",
           "skipTests": true
         },
         "@schematics/angular:service": {

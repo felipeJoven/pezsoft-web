@@ -1,0 +1,88 @@
+<div class="p-3">
+    <form [formGroup]="estanqueForm" (ngSubmit)="onSubmit()">
+        
+        <div class="row mb-3 align-items-center">
+            <label for="tipoEstanque" class="col-sm-3 col-form-label">Tipo de Estanque</label>
+            <div class="col-sm-4">
+                <select id="tipoEstanque" formControlName="tipoEstanqueId" class="form-select form-select-sm">
+                    <option [ngValue]="null" disabled>Seleccione --</option>
+                    <option *ngFor="let tipo of tipoEstanque" [ngValue]="tipo.id"> {{ tipo.tipoEstanque }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="estanque" class="col-sm-3 col-form-label">Nombre del estanque</label>
+            <div class="col-auto">
+                <input type="text" id="estanque" class="form-control" formControlName="estanque">
+                <div *ngIf="estanqueForm.get('estanque')?.invalid && estanqueForm.get('estanque')?.touched"
+                    class="text-danger">
+                    El campo es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="coordenadas" class="col-sm-3 col-form-label">Coordenadas</label>
+            <div class="col-auto">
+                <input type="text" id="coordenadas" class="form-control" formControlName="coordenadas">
+                <div *ngIf="estanqueForm.get('coordenadas')?.invalid && estanqueForm.get('coordenadas')?.touched"
+                    class="text-danger">
+                    El campo es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="largo" class="col-sm-3 col-form-label">Largo</label>
+            <div class="col-auto d-flex align-items-center">
+                <input type="text" id="largo" class="form-control" [value]="estanque?.largo | comaDecimal"
+                    formControlName="largo" appSeparadorDecimales>
+                <span class="ms-2">mts</span>
+                <div *ngIf="estanqueForm.get('largo')?.invalid && estanqueForm.get('largo')?.touched"
+                    class="text-danger">
+                    El campo es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="ancho" class="col-sm-3 col-form-label">Ancho</label>
+            <div class="col-auto d-flex align-items-center">
+                <input type="text" id="ancho" class="form-control" [value]="estanque?.ancho | comaDecimal"
+                    formControlName="ancho" appSeparadorDecimales>
+                <span class="ms-2">mts</span>
+                <div *ngIf="estanqueForm.get('ancho')?.invalid && estanqueForm.get('ancho')?.touched"
+                    class="text-danger">
+                    El campo es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="area" class="col-sm-3 col-form-label">Área</label>
+            <div class="col-auto">
+                <input type="string" id="area" class="form-control" [value]="calcularArea()" disabled>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="profundidad" class="col-sm-3 col-form-label">Profunidad</label>
+            <div class="col-auto d-flex align-items-center">
+                <input type="text" id="profundidad" class="form-control" [value]="estanque?.profundidad | comaDecimal"
+                    formControlName="profundidad" appSeparadorDecimales>
+
+                <span class="ms-2">mts</span>
+                <div *ngIf="estanqueForm.get('profundidad')?.invalid && estanqueForm.get('profundidad')?.touched"
+                    class="text-danger">
+                    El campo es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-5 gap-5">
+            <button type="submit" class="btn btn-success me-2" [disabled]="estanqueForm.invalid">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
+        </div>
+    </form>
+</div>

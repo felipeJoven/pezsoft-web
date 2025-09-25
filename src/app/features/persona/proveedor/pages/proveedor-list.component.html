@@ -1,0 +1,51 @@
+<div class="container mt-4">
+    <div class="justify-content-between">
+        <div class="h1 bg-gray-500 border-3 border-gray-400">Lista de Proveedores</div>
+    </div>
+
+    <app-btn-agregar (click)="openModal()"></app-btn-agregar>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Razón social</th>
+                <th>Tipo de identificación</th>
+                <th>Número de identificación</th>
+                <th>Tipo de proveedor</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Celular</th>
+                <th>Telefono</th>
+                <th>Correo</th>
+                <th>Dirección</th>
+                <th>Fecha creación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let proveedor of proveedores">
+                <td>{{ proveedor.razonSocial }}</td>
+                <td>{{ proveedor.tipoIdentificacion }}</td>
+                <td>{{ proveedor.numeroIdentificacion }}</td>
+                <td>{{ proveedor.tipoProveedor }}</td>
+                <td>{{ proveedor.nombre }}</td>
+                <td>{{ proveedor.apellido }}</td>
+                <td>{{ proveedor.celular }}</td>
+                <td>{{ proveedor.telefono || 'N/A' }}</td>
+                <td>{{ proveedor.correo }}</td>
+                <td>{{ proveedor.direccion }}</td>                
+                <td>{{ proveedor.fechaCreacion }}</td>
+                <td>
+                    <app-btn-editar (clickEvent)="openModal(proveedor)"></app-btn-editar>
+                    <app-btn-eliminar (clickEvent)="borrarProveedor(proveedor.id)"></app-btn-eliminar>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<app-modal *ngIf="showModal" [show]="showModal" [title]="selectedProveedor ? 'Editar proveedor' : 'Agregar proveedor'" (closed)="closeModal()">
+
+    <app-proveedor-form [proveedor]="selectedProveedor" (guardado)="onSave()" (cancelar)="closeModal()">
+    </app-proveedor-form>
+</app-modal>

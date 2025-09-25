@@ -1,0 +1,173 @@
+<div class="p-3">
+    <form [formGroup]="proveedorForm" (ngSubmit)="onSubmit()">
+
+        <div class="row mb-3 align-items-center">
+            <label for="razonSocial" class="col-sm-3 col-form-label">Razón social</label>
+            <div class="col-auto">
+                <input type="text" id="razonSocial" class="form-control" formControlName="razonSocial" maxlength="50">
+                <div *ngIf="proveedorForm.get('razonSocial')?.invalid && proveedorForm.get('razonSocial')?.touched"
+                    class="text-danger">
+                    La razón social es obligatoria
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="tipoIdentificacion" class="col-sm-3 col-form-label">Tipo de identificación</label>
+            <div class="col-sm-4">
+                <select id="tipoIdentificacion" formControlName="tipoIdentificacionId"
+                    class="form-select form-select-sm">
+                    <option [ngValue]="null" disabled>Seleccione --</option>
+                    <option *ngFor="let tipo of tipoIdentificacion" [ngValue]="tipo.id"> {{ tipo.tipoIdentificacion }}
+                    </option>
+                </select>
+                <div *ngIf="proveedorForm.get('tipoIdentificacionId')?.touched 
+                    && proveedorForm.get('tipoIdentificacionId')?.errors?.['required']" class="text-danger">
+                    Debe seleccionar un tipo de identificación
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="numeroIdentificacion" class="col-sm-3 col-form-label">Número de identificación</label>
+            <div class="col-auto">
+                <input type="text" id="numeroIdentificacion" class="form-control" formControlName="numeroIdentificacion"
+                    appSoloNumeros [allowHyphen]="true" maxlength="12">
+
+                <div *ngIf="proveedorForm.get('numeroIdentificacion')?.touched || proveedorForm.get('numeroIdentificacion')?.dirty"
+                    class="text-danger">
+
+                    <div *ngIf="proveedorForm.get('numeroIdentificacion')?.errors?.['required']">
+                        El número de identificación es obligatorio
+                    </div>
+
+                    <div *ngIf="proveedorForm.get('numeroIdentificacion')?.errors?.['invalidFormat']">
+                        El número de identificación no puede terminar en guión (-)
+                    </div>
+
+                    <div *ngIf="proveedorForm.get('numeroIdentificacion')?.errors?.['leng6a12']">
+                        El número de identificación debe tener entre 6 y 12 dígitos
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="tipoProveedor" class="col-sm-3 col-form-label">Tipo de proveedor</label>
+            <div class="col-sm-4">
+                <select id="tipoProveedor" formControlName="tipoProveedorId" class="form-select form-select-sm">
+                    <option [ngValue]="null" disabled>Seleccione --</option>
+                    <option *ngFor="let tipo of tipoProveedor" [ngValue]="tipo.id"> {{ tipo.tipoProveedor }}</option>
+                </select>
+                <div *ngIf="proveedorForm.get('tipoProveedorId')?.touched 
+                    && proveedorForm.get('tipoProveedorId')?.errors?.['required']" class="text-danger">
+                    Debe seleccionar un tipo de proveedor
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="nombre" class="col-sm-3 col-form-label">Nombre</label>
+            <div class="col-auto">
+                <input type="text" id="nombre" class="form-control" formControlName="nombre" appSoloLetras
+                    maxlength="50">
+                <div *ngIf="proveedorForm.get('nombre')?.invalid && proveedorForm.get('nombre')?.touched"
+                    class="text-danger">
+                    El nombre es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="apellido" class="col-sm-3 col-form-label">Apellido</label>
+            <div class="col-auto">
+                <input type="text" id="apellido" class="form-control" formControlName="apellido" appSoloLetras
+                    maxlength="50">
+                <div *ngIf="proveedorForm.get('apellido')?.invalid && proveedorForm.get('apellido')?.touched"
+                    class="text-danger">
+                    El apellido es obligatorio
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="celular" class="col-sm-3 col-form-label">Celular</label>
+            <div class="col-auto">
+                <input type="text" id="celular" class="form-control" formControlName="celular" appSoloNumeros
+                    maxlength="10">
+
+                <div *ngIf="proveedorForm.get('celular')?.touched || proveedorForm.get('celular')?.dirty"
+                    class="text-danger">
+
+                    <div *ngIf="proveedorForm.get('celular')?.errors?.['required']">
+                        El celular es obligatorio
+                    </div>
+
+                    <div *ngIf="proveedorForm.get('celular')?.errors?.['startWith3']">
+                        El celular debe iniciar con el número 3...
+                    </div>
+
+                    <div *ngIf="proveedorForm.get('celular')?.errors?.['length10']">
+                        El celular debe tener exactamente 10 dígitos
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="telefono" class="col-sm-3 col-form-label">Teléfono</label>
+            <div class="col-auto">
+                <input type="text" id="telefono" class="form-control" formControlName="telefono" appSoloNumeros
+                    maxlength="10">
+                <div *ngIf="proveedorForm.get('telefono')?.touched || proveedorForm.get('telefono')?.dirty"
+                    class="text-danger">
+
+                    <div *ngIf="proveedorForm.get('telefono')?.errors?.['startWith60']">
+                        El teléfono debe iniciar con los números 60...
+                    </div>
+
+                    <div *ngIf="proveedorForm.get('telefono')?.errors?.['length10']">
+                        El teléfono debe tener exactamente 10 dígitos
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="correo" class="col-sm-3 col-form-label">Correo</label>
+            <div class="col-auto">
+                <input type="text" id="correo" class="form-control" formControlName="correo" maxlength="50">
+
+                <div *ngIf="proveedorForm.get('correo')?.touched || proveedorForm.get('correo')?.dirty"
+                    class="text-danger">
+                    <div *ngIf="proveedorForm.get('correo')?.errors?.['required']">
+                        El correo es obligatorio
+                    </div>
+
+                    <div *ngIf="proveedorForm.get('correo')?.errors?.['pattern']">
+                        El correo no tiene un formato válido (ej: usuario&#64;mail.com)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3 align-items-center">
+            <label for="direccion" class="col-sm-3 col-form-label">Dirección</label>
+            <div class="col-auto">
+                <input type="text" id="direccion" class="form-control" formControlName="direccion" maxlength="50">
+                <div *ngIf="proveedorForm.get('direccion')?.invalid && proveedorForm.get('direccion')?.touched"
+                    class="text-danger">
+                    La dirección es obligatoria
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center mt-5 gap-5">
+            <button type="submit" class="btn btn-success me-2"
+                [disabled]="proveedorForm.invalid || !proveedorForm.dirty">Guardar
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
+        </div>
+    </form>
+</div>

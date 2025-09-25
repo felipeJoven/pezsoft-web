@@ -5,10 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideHttpClient } from '@angular/common/http';
 import { LayoutModule } from './layout/layout.module';
+import { SeparadorDecimalesDirective } from './shared/directives/separador-decimales.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    // SeparadorDecimalesDirective
   ],
   imports: [
     BrowserModule,

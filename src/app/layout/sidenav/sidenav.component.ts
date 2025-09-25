@@ -5,7 +5,7 @@ import { MenuItem } from './menu/menu.model';
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrl: './sidenav.component.css'
+  styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent implements OnInit {
 
@@ -17,19 +17,19 @@ export class SidenavComponent implements OnInit {
       icon: 'fa-solid fa-fish',
       children: [],
       expanded: false
-    },
+    },    
     {
       label: 'Catálogo',
       icon: 'fa-solid fa-box-open',
       children: [],
       expanded: false
-    },
+    },  
     {
       label: 'Persona',
       icon: 'fa-solid fa-user',
       children: [],
       expanded: false
-    },
+    },  
     {
       label: 'Usuario',
       icon: 'fa-solid fa-users-cog',
@@ -55,7 +55,7 @@ export class SidenavComponent implements OnInit {
         });
         this.menuItems = this.menuItems.filter(item => !item.children || item.children.length > 0);
       },
-      error: (error) => console.log('Error cargando el menú', error)
+      error: (e) => console.log('Error cargando el menú', e)
     });
   }
 

@@ -5,7 +5,7 @@ import { EspecieService } from '../services/especie.service';
 @Component({
   selector: 'app-especie-list',
   templateUrl: './especie-list.component.html',
-  styleUrl: './especie-list.component.css'
+  styleUrls: ['./especie-list.component.css']
 })
 export class EspecieListComponent {
 
@@ -25,9 +25,8 @@ export class EspecieListComponent {
         this.especies = data,
         console.log("Especies: ", this.especies);      
       },
-      error: (error) => console.log("Error cargando especies! ", error)      
-    })
-    
+      error: (e) => console.log("Error cargando especies: ", e)      
+    });    
   }
 
   openModal(especie?: Especie): void {
@@ -45,10 +44,10 @@ export class EspecieListComponent {
     this.cargarEspecies();
   }
 
-  eliminarEspecie(id:number): void {
+  borrarEspecie(id: number): void {
     this.especieService.eliminarEspecie(id).subscribe({
       next: () => this.cargarEspecies(),
-      error: (error) => console.log("Error eliminando la especie", error)      
+      error: (e) => console.log("Error eliminando la especie ", e)      
     });
   }
 }
