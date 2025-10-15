@@ -22,53 +22,76 @@
     </div>
   </div>
 
-<table class="w-100 mt-3" *ngIf="!errorMessage">
+  <div *ngIf="!isLoading && especies.length === 0" class="alert alert-info mt-3 text-center" style="width: 50%;">
+        No existen especies registradas
+    </div>
+
+  <table class="w-100 mt-3" *ngIf="!errorMessage">
+
+    <thead>
+      <ng-container *ngIf="isLoading && !isFiltering; else headerReal">
+        <tr>
+          <th>
+            <div class="skeleton-header"></div>
+          </th>
+          <th>
+            <div class="skeleton-header"></div>
+          </th>
+          <th>
+            <div class="skeleton-header"></div>
+          </th>
+        </tr>
+      </ng-container>
+
+      <ng-template #headerReal>
+        <tr *ngIf="(!isLoading || isFiltering) && especies.length > 0">
+          <th>Nombre de especie</th>
+          <th>Fecha de creación</th>
+          <th>Acciones</th>
+        </tr>
+      </ng-template>
+    </thead>
+
+    <tbody>
+
+      <ng-container *ngIf="isLoading; else filasDatos">
+        <tr *ngFor="let _ of skeletonRows">
+          <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
+          <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
+          <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
+        </tr>
+      </ng-container>
+
+      <ng-template #filasDatos>
+        <tr *ngFor="let especie of especies">
+          <td>{{ especie.especie }}</td>
+          <td>{{ especie.fechaCreacion }}</td>
+          <td>
+            <app-btn-editar (clickEvent)="openModal(especie)"></app-btn-editar>
+            <app-btn-eliminar (clickEvent)="borrarEspecie(especie.id)"></app-btn-eliminar>
+          </td>
+        </tr>
+      </ng-template>
+
+    </tbody>
+  </table>
   
-  <thead *ngIf="(!isLoading || isFiltering) && especies.length > 0">
-    <tr>
-      <th>Nombre de especie</th>
-      <th>Fecha de creación</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-
-  <thead *ngIf="isLoading && !isFiltering">
-    <tr>
-      <th><div class="skeleton-header"></div></th>
-      <th><div class="skeleton-header"></div></th>
-      <th><div class="skeleton-header"></div></th>
-    </tr>
-  </thead>
-
-  <tbody *ngIf="isLoading">
-    <tr *ngFor="let _ of skeletonRows">
-      <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
-      <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
-      <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
-    </tr>
-  </tbody>
-
-  <tbody *ngIf="!isLoading && especies.length > 0">
-    <tr *ngFor="let especie of especies">
-      <td>{{ especie.especie }}</td>
-      <td>{{ especie.fechaCreacion }}</td>
-      <td>
-        <app-btn-editar (clickEvent)="openModal(especie)"></app-btn-editar>
-        <app-btn-eliminar (clickEvent)="borrarEspecie(especie.id)"></app-btn-eliminar>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<div *ngIf="!isLoading && errorMessage" class="alert alert-danger mt-3 text-center">
-  {{ errorMessage }}
-</div>
-
-<p *ngIf="!isLoading && especies.length === 0 && !errorMessage" class="text-center text-muted mt-3">
-  No hay especies registradas.
-</p>
+  <div *ngIf="!isLoading && errorMessage" class="alert alert-danger text-center mx-auto mt-2" style="width: 50%;">
+    {{ errorMessage }}
+  </div>
 
 
-<app-modal [show]="showModal" [title]="selectedEspecie ? 'Editar especie' : 'Agregar especie'" (closed)="closeModal()">
-  <app-especie-form [especie]="selectedEspecie" (guardado)="onSave()" (cancelar)="closeModal()"></app-especie-form>
-</app-modal>
+  <p *ngIf="!isLoading && especies.length === 0 && !errorMessage" class="alert alert-info mt-3 text-center"
+    style="width: 50%;">
+    No existen especies registradas
+  </p>
+
+  <app-modal *ngIf="showModal" [show]="showModal" [title]="selectedEspecie ? 'Editar especie' : 'Agregar especie'"
+    (closed)="closeModal()">
+    
+    <app-especie-form [especie]="selectedEspecie" 
+      (guardado)="onSave()" 
+      (cancelar)="closeModal()">      
+    </app-especie-form>
+
+  </app-modal>

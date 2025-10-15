@@ -1,9 +1,27 @@
-<div class="container mt-4">
-    <div class="justify-content-between">
-        <div class="h1 bg-gray-500 border-3 border-gray-400">Lista de Proveedores</div>
+<div class="container mt-4">    
+    <h1 class="mb-4 text-center">Lista de Proveedores</h1>
+    
+     <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap">
+    <div>
+      <app-btn-agregar (click)="openModal()"></app-btn-agregar>
     </div>
 
-    <app-btn-agregar (click)="openModal()"></app-btn-agregar>
+    <div class="flex-grow-1 d-flex justify-content-center">
+      <input type="text" class="form-control w-auto" style="min-width: 300px;" placeholder="Buscar especie..."
+        [formControl]="busquedaControl" />
+    </div>
+
+    <div>
+      <select class="form-select w-auto" [formControl]="ordenControl">
+        <option value="" disabled selected>Ordenar por...</option>
+        <option value="nombreAsc">Nombre (A-Z)</option>
+        <option value="nombreDesc">Nombre (Z-A)</option>
+        <option value="fechaAsc">Fecha más antigua</option>
+        <option value="fechaDesc">Fecha más reciente</option>
+      </select>
+    </div>
+  </div>
+
 
     <table>
         <thead>
@@ -47,6 +65,9 @@
 <app-modal *ngIf="showModal" [show]="showModal" [title]="selectedProveedor ? 'Editar proveedor' : 'Agregar proveedor'"
     (closed)="closeModal()">
 
-    <app-proveedor-form [proveedor]="selectedProveedor" (guardado)="onSave()" (cancelar)="closeModal()">
+    <app-proveedor-form [proveedor]="selectedProveedor" 
+      (guardado)="onSave()" 
+      (cancelar)="closeModal()">
     </app-proveedor-form>
+
 </app-modal>

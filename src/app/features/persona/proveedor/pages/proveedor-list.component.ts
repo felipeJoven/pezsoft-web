@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Proveedor } from '../model/proveedor.model';
 import { ProveedorService } from '../services/proveedor.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-proveedor-list',
@@ -10,6 +11,8 @@ import { ProveedorService } from '../services/proveedor.service';
 export class ProveedorListComponent {
 
   proveedores: Proveedor[] = [];
+  busquedaControl = new FormControl('');
+  ordenControl = new FormControl('');
   showModal = false;
   selectedProveedor: Proveedor | null = null;
 
