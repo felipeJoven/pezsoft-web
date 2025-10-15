@@ -12,6 +12,7 @@ export class EstanqueListComponent {
   estanques: Estanque[] = [];
   showModal = false;
   selectedEstanque: Estanque | null = null;
+  isLoading = true;
 
   constructor(private estanqueService: EstanqueService) { }
 
@@ -23,9 +24,13 @@ export class EstanqueListComponent {
     this.estanqueService.obtenerEstanques().subscribe({
       next: (data) => {
         this.estanques = data,
+        this.isLoading = false;
         console.log("Estanques: ", this.estanques);
       },
-      error: (e) => console.log("Error cargando estanques: ", e)      
+      error: (e) => {
+        console.log("Error cargando estanques: ", e);      
+        this.isLoading = false;
+      }
     });
   }
 

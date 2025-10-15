@@ -7,13 +7,15 @@
                 <input type="text" id="especie" class="form-control" formControlName="especie">
                 <div *ngIf="especieForm.get('especie')?.invalid && especieForm.get('especie')?.touched"
                     class="text-danger">
-                    El campo es obligatorio
+                    La especie es obligatoria
                 </div>
             </div>
         </div>
 
         <div class="d-flex justify-content-center mt-5 gap-5">
-            <button type="submit" class="btn btn-success me-2" [disabled]="especieForm.invalid">Guardar</button>
+            <button type="submit" class="btn btn-success me-2" 
+                [disabled]="especieForm.invalid || !especieForm.dirty">Guardar                
+            </button>
             <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancelar</button>
         </div>
     </form>

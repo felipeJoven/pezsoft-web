@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { Especie } from '../model/especie.model';
 
 @Injectable({
@@ -13,7 +13,13 @@ export class EspecieService {
   constructor(private http: HttpClient) { }
 
   obtenerEspecies(filtro?: string): Observable<Especie[]> {
-    return this.http.get<Especie[]>(this.apiUrl);
+    const url = filtro ? `${this.apiUrl}?filtro=${filtro}` : this.apiUrl;
+    return this.http.get<Especie[]>(url).pipe(
+      catchError((e) => {
+        console.error("Error al filtrar especies: ", e);
+        return throwError(() => e);
+      })
+    );
   }
 
   obtenerEspeciePorId(id: number): Observable<Especie> {

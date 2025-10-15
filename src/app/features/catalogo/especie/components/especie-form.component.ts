@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { Especie } from '../model/especie.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+import { Especie } from '../model/especie.model';
 import { EspecieService } from '../services/especie.service';
 
 @Component({
@@ -25,8 +26,12 @@ export class EspecieFormComponent implements OnChanges {
    ngOnChanges(changes: SimpleChanges): void {
     if (changes['especie'] && this.especie) {
       this.especieForm.patchValue(this.especie);
+      this.especieForm.markAsPristine();
+      this.especieForm.markAsUntouched();
     } else {
       this.especieForm.reset();
+      this.especieForm.markAsPristine();
+      this.especieForm.markAsUntouched();
     }
   }
 

@@ -4,8 +4,9 @@ import { CommonModule } from '@angular/common';
 import { EspecieRoutingModule } from './especie-routing.module';
 import { EspecieListComponent } from './pages/especie-list.component';
 import { EspecieFormComponent } from './components/especie-form.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   declarations: [
@@ -14,10 +15,10 @@ import { SharedModule } from '../../../shared/shared.module';
   ],
   imports: [
     CommonModule,
-    // FormsModule,
     ReactiveFormsModule,
     EspecieRoutingModule,
-    SharedModule   
+    SharedModule,
+    SkeletonModule
   ]
 })
 export class EspecieModule { }

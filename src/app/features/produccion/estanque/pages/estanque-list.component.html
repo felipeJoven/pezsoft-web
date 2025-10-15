@@ -5,7 +5,17 @@
 
     <app-btn-agregar (click)="openModal()"></app-btn-agregar>
 
-    <table class="table table-striped">
+    <div *ngIf="isLoading" class="text-center mt-3">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+    </div>
+
+    <div *ngIf="!isLoading && estanques.length === 0" class="alert alert-info mt-3 text-center">
+        No existen estanques actualmente en la base de datos
+    </div>
+
+    <table *ngIf="!isLoading && estanques.length > 0">
         <thead>
             <tr>
                 <th>Tipo de estanque</th>
@@ -44,7 +54,8 @@
     </table>
 </div>
 
-<app-modal [show]="showModal" [title]="selectedEstanque ? 'Editar estanque' : 'Agregar estanque'" (closed)="closeModal()">
+<app-modal [show]="showModal" [title]="selectedEstanque ? 'Editar estanque' : 'Agregar estanque'"
+    (closed)="closeModal()">
 
     <app-estanque-form [estanque]="selectedEstanque" (guardado)="onSave()" (cancelar)="closeModal()">
     </app-estanque-form>

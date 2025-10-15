@@ -9,7 +9,6 @@ export class ProveedorValidators {
         if (!value) return { required: true };
         if (!/^\d/.test(value)) return null;
         if (!/^[0-9]+(-[0-9])?$/.test(value)) return { invalidFormat: true };
-        // if (value.endsWith('-')) return { invalidFormat: true };
         
         const digits = value.replace(/-/g, '');
         if (digits.length < 6 || digits.length > 12) return { leng6a12: true };

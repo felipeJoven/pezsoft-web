@@ -1,3 +1,14 @@
+button {
+  border-radius: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 10px 20px;
+  margin-bottom: 0;
+}
+
 button:hover {
   background-color: #198754cc;
 }

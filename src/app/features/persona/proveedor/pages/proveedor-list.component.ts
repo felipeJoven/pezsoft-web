@@ -5,7 +5,7 @@ import { ProveedorService } from '../services/proveedor.service';
 @Component({
   selector: 'app-proveedor-list',
   templateUrl: './proveedor-list.component.html',
-  styleUrl: './proveedor-list.component.css'
+  styleUrls: ['./proveedor-list.component.css']
 })
 export class ProveedorListComponent {
 
