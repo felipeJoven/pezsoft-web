@@ -1,30 +1,27 @@
 <div class="container mt-4">
   <h1 class="mb-4 text-center">Lista de Especies</h1>
 
-  <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap">
-    <div>
+  <div class="d-flex align-items-center justify-content-between mb-3">
+
+    <div class="me-2">
       <app-btn-agregar (click)="openModal()"></app-btn-agregar>
     </div>
 
-    <div class="flex-grow-1 d-flex justify-content-center">
-      <input type="text" class="form-control w-auto" style="min-width: 300px;" placeholder="Buscar especie..."
-        [formControl]="busquedaControl" />
+    <div class="d-flex justify-content-center flex-grow-1">
+      <div class="d-flex align-items-center gap-2" style="min-width: 320px; max-width: 600px; width: 50%;">
+        <!-- aquí el hijo que ya tiene input + botón -->
+        <app-filtro-busqueda [searchControl]="busquedaControl" (clear)="limpiarBusqueda()"
+          placeholder="Buscar especie...">
+        </app-filtro-busqueda>
+      </div>
     </div>
 
-    <div>
-      <select class="form-select w-auto" [formControl]="ordenControl">
-        <option value="" disabled selected>Ordenar por...</option>
-        <option value="nombreAsc">Nombre (A-Z)</option>
-        <option value="nombreDesc">Nombre (Z-A)</option>
-        <option value="fechaAsc">Fecha más antigua</option>
-        <option value="fechaDesc">Fecha más reciente</option>
-      </select>
-    </div>
   </div>
 
-  <div *ngIf="!isLoading && especies.length === 0" class="alert alert-info mt-3 text-center" style="width: 50%;">
-        No existen especies registradas
-    </div>
+  <div *ngIf="!isLoading && (especies.length === 0 && !especies)" class="alert alert-info mt-3 text-center"
+    style="width: 50%;">
+    No existen especies registradas
+  </div>
 
   <table class="w-100 mt-3" *ngIf="!errorMessage">
 
@@ -44,7 +41,7 @@
       </ng-container>
 
       <ng-template #headerReal>
-        <tr *ngIf="(!isLoading || isFiltering) && especies.length > 0">
+        <tr *ngIf="(!isLoading || isFiltering) && especies">
           <th>Nombre de especie</th>
           <th>Fecha de creación</th>
           <th>Acciones</th>
@@ -75,11 +72,10 @@
 
     </tbody>
   </table>
-  
+
   <div *ngIf="!isLoading && errorMessage" class="alert alert-danger text-center mx-auto mt-2" style="width: 50%;">
     {{ errorMessage }}
   </div>
-
 
   <p *ngIf="!isLoading && especies.length === 0 && !errorMessage" class="alert alert-info mt-3 text-center"
     style="width: 50%;">
@@ -88,10 +84,8 @@
 
   <app-modal *ngIf="showModal" [show]="showModal" [title]="selectedEspecie ? 'Editar especie' : 'Agregar especie'"
     (closed)="closeModal()">
-    
-    <app-especie-form [especie]="selectedEspecie" 
-      (guardado)="onSave()" 
-      (cancelar)="closeModal()">      
+
+    <app-especie-form [especie]="selectedEspecie" (guardado)="onSave()" (cancelar)="closeModal()">
     </app-especie-form>
 
   </app-modal>

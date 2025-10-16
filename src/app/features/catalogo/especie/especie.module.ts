@@ -7,6 +7,7 @@ import { EspecieFormComponent } from './components/especie-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../shared/shared.module';
 import { SkeletonModule } from 'primeng/skeleton';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { SkeletonModule } from 'primeng/skeleton';
     ReactiveFormsModule,
     EspecieRoutingModule,
     SharedModule,
+    TableModule,
     SkeletonModule
   ]
 })

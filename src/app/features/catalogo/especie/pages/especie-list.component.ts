@@ -77,6 +77,11 @@ export class EspecieListComponent implements OnInit, OnDestroy {
     });
   }
 
+  limpiarBusqueda(): void {
+    this.busquedaControl.reset(''); 
+    this.cargarEspecies(); 
+  }
+
   openModal(especie?: Especie): void {
     this.selectedEspecie = especie ?? null;
     this.showModal = true;

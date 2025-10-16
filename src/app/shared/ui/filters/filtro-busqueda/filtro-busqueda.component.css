@@ -1,0 +1,8 @@
+.btn-limpiar {
+  background-color: #fa770c;
+  transition: background-color 0.2s ease;
+}
+
+.btn-limpiar:hover {
+  background-color: #ff8c1a; /* un poco más claro */
+}

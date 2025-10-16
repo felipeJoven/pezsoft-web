@@ -1,0 +1,10 @@
+<div class="d-flex align-items-center justify-content-center gap-2">
+  <input type="text" class="form-control" style="min-width: 300px;" [formControl]="searchControl"
+    [placeholder]="placeholder" />
+
+  <button class="btn btn-sm btn-limpiar d-flex align-items-center text-white"
+        (click)="clearSearch()">
+    <i class="bi bi-eraser-fill me-1"></i> Limpiar
+  </button>
+
+</div>

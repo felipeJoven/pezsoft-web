@@ -2,7 +2,7 @@
   width: 220px;
   background-color: #2d44f3;
   color: white;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   transition: width 0.3s;
