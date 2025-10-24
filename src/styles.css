@@ -7,31 +7,10 @@ label {
     font-weight: 700;
 }
 
-/* thead {  
-  background-color: #2d44f3;
-  color: #ffffff;
-} */
-
 tbody :hover {
     background-color: #e0e0e0;
     cursor: pointer;        
 }
-
-/* tbody tr:last-child td {
-    border-bottom: none;
-} */
-
-/* th, td {
-    text-align: center;
-    border-right: 1px solid black;
-    border-bottom: 1px solid black;
-    padding: 8px;
-} */
-
-/* thead th:last-child,
-tbody td:last-child {
-    border-right: none; 
-} */
 
 table {
   width: min(1000px, 95%);
@@ -69,7 +48,6 @@ table th:last-child, table td:last-child {
   min-height: calc(100vh - 350px);
 }
 
-/* Skeletons: header y celdas (reutilizables) */
 .skeleton-header {
   width: 60%;
   height: 14px;
@@ -82,11 +60,11 @@ table th:last-child, table td:last-child {
 }
 .skeleton-header.small { width: 40%; height: 12px; }
 
-/* skeleton dentro de celdas: dejamos un pequeño padding interno para que no tape bordes */
+
 .p-skeleton.skeleton-cell {
   display: block;
   height: 14px;
-  width: calc(100% - 32px); /* respeta padding de celda y no pega al borde */
+  width: calc(100% - 32px); 
   margin: 6px auto;
   border-radius: 6px;
   background-image: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 37%, #e5e7eb 63%);

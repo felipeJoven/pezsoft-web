@@ -4,6 +4,7 @@ import { Subscription, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 import { EspecieService } from '../services/especie.service';
 import { Especie } from '../model/especie.model';
+import { normalizeString } from '../../../../shared/utils/string-utils';
 
 @Component({
   selector: 'app-especie-list',
@@ -14,61 +15,65 @@ export class EspecieListComponent implements OnInit, OnDestroy {
 
   especies: Especie[] = [];
   especiesPaginadas: any[] = [];
-  busquedaControl = new FormControl('');
-  resetOrden = false;
-  showModal = false;
+  especieSeleccionada: Especie | null = null;
+
+  searchControl = new FormControl('');
   isLoading = true;
   isFiltering = false;
+  showModal = false;
   errorMessage = '';
   skeletonRows: number[] = [];
+  resetSort = false;
 
-  private subscription!: Subscription;
-  selectedEspecie: Especie | null = null;
+  private searchSubscription!: Subscription;
 
   constructor(private especieService: EspecieService) { }
 
   ngOnInit(): void {
-    this.cargarEspecies();
+    this.loadSpecies();
 
-    this.subscription = this.busquedaControl.valueChanges
+    this.searchSubscription = this.searchControl.valueChanges
       .pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        switchMap((filtro) => {
-          this.errorMessage = '';
+        switchMap((filter) => {
           this.isLoading = true;
-          this.isFiltering = !!filtro;
+          this.isFiltering = !!filter;
+          this.errorMessage = '';
 
-          const cantidad = this.especies?.length > 0 ? this.especies.length : 5;
+          const cantidad = this.especiesPaginadas?.length > 0 ? this.especiesPaginadas.length : 5;
           this.skeletonRows = Array.from({ length: cantidad });
 
-          return this.especieService.obtenerEspecies(filtro || '').pipe(
+          return this.especieService.obtenerEspecies(filter || '').pipe(
             catchError((error) => {
               this.errorMessage = error.error?.message || 'No se encontraron especies.';
-              return of([]); 
+              return of([]);
             })
           );
         })
-
       )
       .subscribe((data) => {
         setTimeout(() => {
           this.isLoading = false;
-          this.especies = data;
+
+          const normalizedFilter = normalizeString(this.searchControl.value || '');
+          this.especies = data.filter(e =>
+            normalizeString(e.especie).includes(normalizedFilter)
+          );
         }, 300);
       });
   }
 
-  cargarEspecies(): void {
+  loadSpecies(): void {
     this.isLoading = true;
     this.isFiltering = false;
     this.skeletonRows = Array.from({ length: 5 });
 
     this.especieService.obtenerEspecies().subscribe({
       next: (data) => {
+        this.especies = data;
         setTimeout(() => {
           this.isLoading = false;
-          this.especies = data;
         }, 800);
       },
       error: (e) => {
@@ -78,41 +83,41 @@ export class EspecieListComponent implements OnInit, OnDestroy {
     });
   }
 
-    onPageChange(data: any[]) {
+  onPageChange(data: any[]) {
     this.especiesPaginadas = data;
   }
 
-  limpiarBusqueda(): void {
-    this.busquedaControl.reset(''); 
-    this.cargarEspecies(); 
-    this.resetOrden = !this.resetOrden;
+  clearSearch(): void {
+    this.searchControl.reset('');
+    this.loadSpecies();
+    this.resetSort = !this.resetSort;
   }
 
   openModal(especie?: Especie): void {
-    this.selectedEspecie = especie ?? null;
+    this.especieSeleccionada = especie ?? null;
     this.showModal = true;
   }
 
   closeModal(): void {
     this.showModal = false;
-    this.selectedEspecie = null;
+    this.especieSeleccionada = null;
   }
 
   onSave(): void {
     this.closeModal();
-    this.cargarEspecies();
+    this.loadSpecies();
   }
 
-  borrarEspecie(id: number): void {
+  deleteSpecies(id: number): void {
     this.especieService.eliminarEspecie(id).subscribe({
-      next: () => this.cargarEspecies(),
+      next: () => this.loadSpecies(),
       error: (e) => console.log('Error eliminando la especie ', e)
     });
   }
 
   ngOnDestroy(): void {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
     }
   }
 }

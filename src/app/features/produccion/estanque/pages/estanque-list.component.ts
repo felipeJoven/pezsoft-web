@@ -13,6 +13,7 @@ export class EstanqueListComponent {
   showModal = false;
   selectedEstanque: Estanque | null = null;
   isLoading = true;
+  errorMessage = '';
 
   constructor(private estanqueService: EstanqueService) { }
 
@@ -25,6 +26,7 @@ export class EstanqueListComponent {
       next: (data) => {
         this.estanques = data,
         this.isLoading = false;
+        this.errorMessage = '';
         console.log("Estanques: ", this.estanques);
       },
       error: (e) => {

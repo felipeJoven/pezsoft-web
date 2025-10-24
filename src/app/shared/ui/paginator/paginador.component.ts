@@ -2,7 +2,8 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
 
 @Component({
   selector: 'app-paginador',
-  templateUrl: './paginador.component.html'
+  templateUrl: './paginador.component.html',
+  styleUrls: ['./paginador.component.css']
 })
 export class PaginadorComponent implements OnChanges {
   @Input() data: any[] = [];

@@ -10,17 +10,17 @@
     <div class="d-flex flex-wrap align-items-center justify-content-center gap-2 flex-grow-1">
 
       <div class="flex-grow-1" style="min-width: 250px; max-width: 350px; margin-right: 20px;">
-        <app-filtro-busqueda [searchControl]="busquedaControl" (clear)="limpiarBusqueda()"
+        <app-filtro-busqueda [searchControl]="searchControl" (clear)="clearSearch()"
           placeholder="Buscar especie...">
         </app-filtro-busqueda>
       </div>
 
       <div>
-        <app-btn-limpiar (click)="limpiarBusqueda()"></app-btn-limpiar>
+        <app-btn-limpiar (click)="clearSearch()"></app-btn-limpiar>
       </div>
 
       <div class="d-flex justify-content-end" style="min-width: 180px;">
-        <app-filtro-orden [data]="especies" campoTexto="especie" campoFecha="fechaCreacion" [resetSignal]="resetOrden"
+        <app-filtro-orden [data]="especies" campoTexto="especie" campoFecha="fechaCreacion" [resetSignal]="resetSort"
           (sortedData)="especies = $event">
         </app-filtro-orden>
       </div>
@@ -32,7 +32,7 @@
     {{ errorMessage }}
   </div>
 
-  <p *ngIf="!isLoading && especies.length === 0 && !errorMessage" class="alert alert-info mt-3 text-center"
+  <p *ngIf="!isLoading && especies.length === 0 && !errorMessage" class="alert alert-info text-center mx-auto mt-3 text-center"
     style="width: 50%;">
     No existen especies registradas
   </p>
@@ -50,7 +50,7 @@
         </ng-container>
 
         <ng-template #headerReal>
-          <tr *ngIf="(!isLoading || isFiltering) && especies">
+          <tr *ngIf="(!isLoading || isFiltering) && especiesPaginadas">
             <th>Nombre de especie</th>
             <th>Fecha de creación</th>
             <th>Acciones</th>
@@ -74,7 +74,7 @@
             <td>{{ especie.fechaCreacion }}</td>
             <td>
               <app-btn-editar (clickEvent)="openModal(especie)"></app-btn-editar>
-              <app-btn-eliminar (clickEvent)="borrarEspecie(especie.id)"></app-btn-eliminar>
+              <app-btn-eliminar (clickEvent)="deleteSpecies(especie.id)"></app-btn-eliminar>
             </td>
           </tr>
         </ng-template>
@@ -85,10 +85,10 @@
 
   <app-paginador [data]="especies" (dataPaginadaChange)="onPageChange($event)"></app-paginador>
   
-  <app-modal *ngIf="showModal" [show]="showModal" [title]="selectedEspecie ? 'Editar especie' : 'Agregar especie'"
+  <app-modal *ngIf="showModal" [show]="showModal" [title]="especieSeleccionada ? 'Editar especie' : 'Agregar especie'"
     (closed)="closeModal()">
 
-    <app-especie-form [especie]="selectedEspecie" (guardado)="onSave()" (cancelar)="closeModal()">
+    <app-especie-form [especie]="especieSeleccionada" (guardado)="onSave()" (cancelar)="closeModal()">
     </app-especie-form>
 
   </app-modal>

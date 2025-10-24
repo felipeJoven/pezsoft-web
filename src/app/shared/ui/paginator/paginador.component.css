@@ -1,0 +1,42 @@
+.text-muted.small {
+    font-size: 1.2rem;
+    color: #343a40;
+    font-weight: 600;
+}
+
+.btn-pagination {
+  background-color: #fff;
+  border: 1.8px solid #2d44f3;
+  color: #2d44f3;
+  font-weight: 600;
+  transition: all 0.25s ease-in-out;
+  border-radius: 6px;
+}
+
+.btn-pagination:hover:not(:disabled) {
+  background-color: #2d44f3;
+  color: #fff;
+}
+
+.btn-pagination.active {
+  background-color: #2d44f3;
+  color: #fff;
+}
+
+.arrow-btn {
+  font-size: 1.6rem; 
+  padding: 0 14px;
+  line-height: 1;
+}
+
+.btn-pagination:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+select.form-select {
+  border: 1.8px solid #2d44f3;  
+  font-weight: 600;
+  background-color: #fff;
+  border-radius: 6px;  
+}

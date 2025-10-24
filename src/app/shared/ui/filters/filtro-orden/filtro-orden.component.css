@@ -1,0 +1,6 @@
+select.form-select {
+  border: 1.8px solid #2d44f3;  
+  font-weight: 600;
+  background-color: #fff;
+  border-radius: 6px;  
+}
