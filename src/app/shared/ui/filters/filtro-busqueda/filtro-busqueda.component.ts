@@ -14,7 +14,6 @@ export class FiltroBusquedaComponent {
   @Output() clear = new EventEmitter<void>();
 
   searchText: string = '';
-  selectedOrder: string = '';  
 
   onSearchChange() {
     this.searchChange.emit(this.searchText);
@@ -22,7 +21,6 @@ export class FiltroBusquedaComponent {
 
   clearSearch() {
     this.searchText = '';
-    this.selectedOrder = '';
     this.clear.emit();
   }
 }

@@ -1,8 +1,7 @@
-<div class="d-flex align-items-center justify-content-center flex-wrap gap-2">
-
-  <select class="form-select w-auto" [formControl]="orderControl" (change)="onOrderChange()">
-    <option value="" disabled>Ordenar por...</option>
-    <option *ngFor="let option of orderOptions" [value]="option.value">{{ option.label }}</option>
-  </select>
-
-</div>
+<select class="form-select form-select-sm" [formControl]="ordenControl">
+  <option value="" disabled>Ordenar por...</option>
+  <option value="az">De la A - Z</option>
+  <option value="za">De la Z - A</option>
+  <option value="fecha-asc">Más antiguos</option>
+  <option value="fecha-desc">Más recientes</option>
+</select>

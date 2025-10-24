@@ -3,75 +3,30 @@
 
   <div class="d-flex align-items-center justify-content-between mb-3">
 
-    <div class="me-2">
+    <div class="d-flex justify-content-between" style="min-width: 180px; margin-left: 150px;">
       <app-btn-agregar (click)="openModal()"></app-btn-agregar>
     </div>
 
-    <div class="d-flex justify-content-center flex-grow-1">
-      <div class="d-flex align-items-center gap-2" style="min-width: 320px; max-width: 600px; width: 50%;">
-        <!-- aquí el hijo que ya tiene input + botón -->
+    <div class="d-flex flex-wrap align-items-center justify-content-center gap-2 flex-grow-1">
+
+      <div class="flex-grow-1" style="min-width: 250px; max-width: 350px; margin-right: 20px;">
         <app-filtro-busqueda [searchControl]="busquedaControl" (clear)="limpiarBusqueda()"
           placeholder="Buscar especie...">
         </app-filtro-busqueda>
       </div>
+
+      <div>
+        <app-btn-limpiar (click)="limpiarBusqueda()"></app-btn-limpiar>
+      </div>
+
+      <div class="d-flex justify-content-end" style="min-width: 180px;">
+        <app-filtro-orden [data]="especies" campoTexto="especie" campoFecha="fechaCreacion" [resetSignal]="resetOrden"
+          (sortedData)="especies = $event">
+        </app-filtro-orden>
+      </div>
+
     </div>
-
   </div>
-
-  <div *ngIf="!isLoading && (especies.length === 0 && !especies)" class="alert alert-info mt-3 text-center"
-    style="width: 50%;">
-    No existen especies registradas
-  </div>
-
-  <table class="w-100 mt-3" *ngIf="!errorMessage">
-
-    <thead>
-      <ng-container *ngIf="isLoading && !isFiltering; else headerReal">
-        <tr>
-          <th>
-            <div class="skeleton-header"></div>
-          </th>
-          <th>
-            <div class="skeleton-header"></div>
-          </th>
-          <th>
-            <div class="skeleton-header"></div>
-          </th>
-        </tr>
-      </ng-container>
-
-      <ng-template #headerReal>
-        <tr *ngIf="(!isLoading || isFiltering) && especies">
-          <th>Nombre de especie</th>
-          <th>Fecha de creación</th>
-          <th>Acciones</th>
-        </tr>
-      </ng-template>
-    </thead>
-
-    <tbody>
-
-      <ng-container *ngIf="isLoading; else filasDatos">
-        <tr *ngFor="let _ of skeletonRows">
-          <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
-          <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
-          <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
-        </tr>
-      </ng-container>
-
-      <ng-template #filasDatos>
-        <tr *ngFor="let especie of especies">
-          <td>{{ especie.especie }}</td>
-          <td>{{ especie.fechaCreacion }}</td>
-          <td>
-            <app-btn-editar (clickEvent)="openModal(especie)"></app-btn-editar>
-            <app-btn-eliminar (clickEvent)="borrarEspecie(especie.id)"></app-btn-eliminar>
-          </td>
-        </tr>
-      </ng-template>
-
-    </tbody>
-  </table>
 
   <div *ngIf="!isLoading && errorMessage" class="alert alert-danger text-center mx-auto mt-2" style="width: 50%;">
     {{ errorMessage }}
@@ -82,6 +37,54 @@
     No existen especies registradas
   </p>
 
+  <div class="table-container">
+    <table *ngIf="!errorMessage">
+
+      <thead>
+        <ng-container *ngIf="isLoading && !isFiltering; else headerReal">
+          <tr>
+            <th><div class="skeleton-header"></div></th>
+            <th><div class="skeleton-header"></div></th>
+            <th><div class="skeleton-header"></div></th>
+          </tr>
+        </ng-container>
+
+        <ng-template #headerReal>
+          <tr *ngIf="(!isLoading || isFiltering) && especies">
+            <th>Nombre de especie</th>
+            <th>Fecha de creación</th>
+            <th>Acciones</th>
+          </tr>
+        </ng-template>
+      </thead>
+
+      <tbody>
+
+        <ng-container *ngIf="isLoading; else filasDatos">
+          <tr *ngFor="let _ of skeletonRows">
+            <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
+            <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
+            <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
+          </tr>
+        </ng-container>
+
+        <ng-template #filasDatos>
+          <tr *ngFor="let especie of especiesPaginadas">
+            <td>{{ especie.especie }}</td>
+            <td>{{ especie.fechaCreacion }}</td>
+            <td>
+              <app-btn-editar (clickEvent)="openModal(especie)"></app-btn-editar>
+              <app-btn-eliminar (clickEvent)="borrarEspecie(especie.id)"></app-btn-eliminar>
+            </td>
+          </tr>
+        </ng-template>
+
+      </tbody>
+    </table>
+  </div>
+
+  <app-paginador [data]="especies" (dataPaginadaChange)="onPageChange($event)"></app-paginador>
+  
   <app-modal *ngIf="showModal" [show]="showModal" [title]="selectedEspecie ? 'Editar especie' : 'Agregar especie'"
     (closed)="closeModal()">
 

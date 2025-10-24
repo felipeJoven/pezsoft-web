@@ -1,0 +1,11 @@
+button {
+  border-radius: 30px;
+  background-color: #fa770c;
+  display: inline-flex;  
+  padding: 8px 8px;
+  color: #ffffff;
+}
+
+button:hover {
+  background-color: #ff8c1a;
+}

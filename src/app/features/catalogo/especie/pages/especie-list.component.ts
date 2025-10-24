@@ -13,8 +13,9 @@ import { Especie } from '../model/especie.model';
 export class EspecieListComponent implements OnInit, OnDestroy {
 
   especies: Especie[] = [];
+  especiesPaginadas: any[] = [];
   busquedaControl = new FormControl('');
-  ordenControl = new FormControl('');
+  resetOrden = false;
   showModal = false;
   isLoading = true;
   isFiltering = false;
@@ -77,9 +78,14 @@ export class EspecieListComponent implements OnInit, OnDestroy {
     });
   }
 
+    onPageChange(data: any[]) {
+    this.especiesPaginadas = data;
+  }
+
   limpiarBusqueda(): void {
     this.busquedaControl.reset(''); 
     this.cargarEspecies(); 
+    this.resetOrden = !this.resetOrden;
   }
 
   openModal(especie?: Especie): void {
