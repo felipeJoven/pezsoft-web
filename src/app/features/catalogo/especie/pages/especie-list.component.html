@@ -32,10 +32,10 @@
     {{ errorMessage }}
   </div>
 
-  <p *ngIf="!isLoading && especies.length === 0 && !errorMessage" class="alert alert-info text-center mx-auto mt-3 text-center"
+  <div *ngIf="!isLoading && especies.length === 0 && !errorMessage" class="alert alert-info text-center mx-auto mt-3"
     style="width: 50%;">
     No existen especies registradas
-  </p>
+  </div>
 
   <div class="table-container">
     <table *ngIf="!errorMessage">
@@ -43,9 +43,9 @@
       <thead>
         <ng-container *ngIf="isLoading && !isFiltering; else headerReal">
           <tr>
-            <th><div class="skeleton-header"></div></th>
-            <th><div class="skeleton-header"></div></th>
-            <th><div class="skeleton-header"></div></th>
+            <th *ngFor="let _ of columns">
+              <div class="skeleton-header"></div>
+            </th>
           </tr>
         </ng-container>
 
@@ -62,9 +62,9 @@
 
         <ng-container *ngIf="isLoading; else filasDatos">
           <tr *ngFor="let _ of skeletonRows">
-            <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
-            <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
-            <td><p-skeleton height="1.5rem" width="100%"></p-skeleton></td>
+            <td *ngFor="let _ of columns">
+              <div class="skeleton-body"></div>
+            </td>            
           </tr>
         </ng-container>
 

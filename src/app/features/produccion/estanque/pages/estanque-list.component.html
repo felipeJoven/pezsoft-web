@@ -11,7 +11,8 @@
         </div>
     </div>
 
-    <div *ngIf="!isLoading && estanques.length === 0 && !errorMessage" class="alert alert-info text-center mx-auto mt-3 text-center" style="width: 50%;">
+    <div *ngIf="!isLoading && estanques.length === 0 && !errorMessage"
+        class="alert alert-info text-center mx-auto mt-3 text-center" style="width: 50%;">
         No existen estanques registrados
     </div>
 
@@ -57,9 +58,7 @@
 <app-modal *ngIf="showModal" [show]="showModal" [title]="selectedEstanque ? 'Editar estanque' : 'Agregar estanque'"
     (closed)="closeModal()">
 
-    <app-estanque-form [estanque]="selectedEstanque" 
-        (guardado)="onSave()" 
-        (cancelar)="closeModal()">
+    <app-estanque-form [estanque]="selectedEstanque" (guardado)="onSave()" (cancelar)="closeModal()">
     </app-estanque-form>
 
 </app-modal>

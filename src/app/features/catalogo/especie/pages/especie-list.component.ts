@@ -25,6 +25,8 @@ export class EspecieListComponent implements OnInit, OnDestroy {
   skeletonRows: number[] = [];
   resetSort = false;
 
+  columns = Array.from({ length: 3 });
+
   private searchSubscription!: Subscription;
 
   constructor(private especieService: EspecieService) { }
