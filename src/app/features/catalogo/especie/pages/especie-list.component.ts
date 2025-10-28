@@ -1,9 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+
 import { Subscription, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
-import { EspecieService } from '../services/especie.service';
+import { FormControl } from '@angular/forms';
+
 import { Especie } from '../model/especie.model';
+import { EspecieService } from '../services/especie.service';
 import { normalizeString } from '../../../../shared/utils/string-utils';
 
 @Component({
@@ -16,14 +18,13 @@ export class EspecieListComponent implements OnInit, OnDestroy {
   especies: Especie[] = [];
   especiesPaginadas: any[] = [];
   especieSeleccionada: Especie | null = null;
-
+  
   searchControl = new FormControl('');
   isLoading = true;
   isFiltering = false;
   showModal = false;
   errorMessage = '';
   skeletonRows: number[] = [];
-  resetSort = false;
 
   columns = Array.from({ length: 3 });
 
@@ -47,8 +48,8 @@ export class EspecieListComponent implements OnInit, OnDestroy {
           this.skeletonRows = Array.from({ length: cantidad });
 
           return this.especieService.obtenerEspecies(filter || '').pipe(
-            catchError((error) => {
-              this.errorMessage = error.error?.message || 'No se encontraron especies.';
+            catchError((e) => {
+              this.errorMessage = e.error?.message || 'No se encontraron especies.';
               return of([]);
             })
           );
@@ -73,13 +74,14 @@ export class EspecieListComponent implements OnInit, OnDestroy {
 
     this.especieService.obtenerEspecies().subscribe({
       next: (data) => {
+        console.log('Especies:', data);
         this.especies = data;
         setTimeout(() => {
           this.isLoading = false;
         }, 800);
       },
-      error: (e) => {
-        console.log('Error cargando especies:', e);
+      error: (error) => {
+        console.log('Error cargando especies:', error);
         this.isLoading = false;
       }
     });
@@ -92,7 +94,6 @@ export class EspecieListComponent implements OnInit, OnDestroy {
   clearSearch(): void {
     this.searchControl.reset('');
     this.loadSpecies();
-    this.resetSort = !this.resetSort;
   }
 
   openModal(especie?: Especie): void {
@@ -113,7 +114,7 @@ export class EspecieListComponent implements OnInit, OnDestroy {
   deleteSpecies(id: number): void {
     this.especieService.eliminarEspecie(id).subscribe({
       next: () => this.loadSpecies(),
-      error: (e) => console.log('Error eliminando la especie ', e)
+      error: (error) => console.log('Error eliminando la especie ', error)
     });
   }
 

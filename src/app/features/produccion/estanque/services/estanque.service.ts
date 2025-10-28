@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
+
 import { Estanque } from '../model/estanque.model';
 
 @Injectable({
@@ -13,7 +14,13 @@ export class EstanqueService {
   constructor(private http: HttpClient) { }
 
   obtenerEstanques(filtro?: string): Observable<Estanque[]> {
-    return this.http.get<Estanque[]>(this.apiUrl);
+    const url = filtro ? `${this.apiUrl}?filtro=${filtro}` : this.apiUrl;
+    return this.http.get<Estanque[]>(url).pipe(
+      catchError((e) => {
+        console.error("Error al filtrar especies: ", e);
+        return throwError(() => e);
+      })
+    );
   }
 
   obtenerEstanquePorId(id: number): Observable<Estanque> {

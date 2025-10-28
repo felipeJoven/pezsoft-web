@@ -4,7 +4,7 @@
         <div class="row mb-3 align-items-center">
             <label for="especie" class="col-sm-3 col-form-label">Especie</label>
             <div class="col-auto">
-                <input type="text" id="especie" class="form-control" formControlName="especie">
+                <input type="text" id="especie" name="especie" class="form-control" formControlName="especie">
                 <div *ngIf="especieForm.get('especie')?.invalid && especieForm.get('especie')?.touched"
                     class="text-danger">
                     La especie es obligatoria

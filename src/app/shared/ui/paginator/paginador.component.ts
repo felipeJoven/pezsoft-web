@@ -6,59 +6,61 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
   styleUrls: ['./paginador.component.css']
 })
 export class PaginadorComponent implements OnChanges {
+  
   @Input() data: any[] = [];
-  @Input() itemsPorPagina = 5;
-  @Output() dataPaginadaChange = new EventEmitter<any[]>(); // 🔹 Envia los datos al padre
+  @Input() itemsPerPage = 5;
+  
+  @Output() paginatedDataChange  = new EventEmitter<any[]>(); 
 
-  paginaActual = 1;
-  paginasTotales = 1;
-  opciones = [5, 10, 15, 20];
-  paginasVisibles: number[] = [];
+  currentPage = 1;
+  totalPages = 1;
+  options = [5, 10, 15, 20];
+  visiblePages: number[] = [];
 
   ngOnChanges() {
-    this.actualizarPaginacion();
+    this.updatePagination();
   }
 
-  private actualizarPaginacion() {
-    this.paginasTotales = Math.ceil(this.data.length / this.itemsPorPagina) || 1;
-    if (this.paginaActual > this.paginasTotales) this.paginaActual = this.paginasTotales;
-    this.cambiarPagina(this.paginaActual);
+  private updatePagination() {
+    this.totalPages = Math.ceil(this.data.length / this.itemsPerPage) || 1;
+    if (this.currentPage > this.totalPages) this.currentPage = this.totalPages;
+    this.pageChange(this.currentPage);
   }
 
-  cambiarItemsPorPagina(event: Event) {
+  changeItemsPerPage(event: Event) {
     const valor = +(event.target as HTMLSelectElement).value;
-    this.itemsPorPagina = valor;
-    this.paginaActual = 1;
-    this.actualizarPaginacion();
+    this.itemsPerPage = valor;
+    this.currentPage = 1;
+    this.updatePagination();
   }
 
-  cambiarPagina(pagina: number) {
-    this.paginaActual = pagina;
-    const inicio = (pagina - 1) * this.itemsPorPagina;
-    const fin = inicio + this.itemsPorPagina;
+  pageChange(pagina: number) {
+    this.currentPage = pagina;
+    const inicio = (pagina - 1) * this.itemsPerPage;
+    const fin = inicio + this.itemsPerPage;
     const dataPaginada = this.data.slice(inicio, fin);
 
-    this.dataPaginadaChange.emit(dataPaginada); // 🔹 Emite los registros paginados
+    this.paginatedDataChange .emit(dataPaginada); 
 
     const range = 2;
-    const start = Math.max(1, this.paginaActual - range);
-    const end = Math.min(this.paginasTotales, this.paginaActual + range);
-    this.paginasVisibles = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+    const start = Math.max(1, this.currentPage - range);
+    const end = Math.min(this.totalPages, this.currentPage + range);
+    this.visiblePages = Array.from({ length: end - start + 1 }, (_, i) => start + i);
   }
 
   prevPage() {
-    if (this.paginaActual > 1) this.cambiarPagina(this.paginaActual - 1);
+    if (this.currentPage > 1) this.pageChange(this.currentPage - 1);
   }
 
   nextPage() {
-    if (this.paginaActual < this.paginasTotales) this.cambiarPagina(this.paginaActual + 1);
+    if (this.currentPage < this.totalPages) this.pageChange(this.currentPage + 1);
   }
 
   firstPage() {
-    this.cambiarPagina(1);
+    this.pageChange(1);
   }
 
   lastPage() {
-    this.cambiarPagina(this.paginasTotales);
+    this.pageChange(this.totalPages);
   }
 }

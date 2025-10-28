@@ -8,8 +8,9 @@ import { BtnEditarComponent } from './ui/buttons/btn-editar/btn-editar.component
 import { BtnEliminarComponent } from './ui/buttons/btn-eliminar/btn-eliminar.component';
 import { FiltroBusquedaComponent } from './ui/filters/filtro-busqueda/filtro-busqueda.component';
 import { FiltroOrdenComponent } from './ui/filters/filtro-orden/filtro-orden.component';
-import { PaginadorComponent } from './ui/paginator/paginador.component';
 import { BtnLimpiarComponent } from './ui/buttons/btn-limpiar/btn-limpiar.component';
+import { PaginadorComponent } from './ui/paginator/paginador.component';
+
 
 @NgModule({
   declarations: [

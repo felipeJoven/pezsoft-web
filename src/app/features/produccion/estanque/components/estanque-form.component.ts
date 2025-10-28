@@ -1,8 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { Estanque } from '../model/estanque.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EstanqueService } from '../services/estanque.service';
+
+import { Estanque } from '../model/estanque.model';
 import { TipoEstanque } from '../tipo-estanque/tipo-estanque.model';
+
+import { EstanqueService } from '../services/estanque.service';
 import { TipoEstanqueService } from '../tipo-estanque/tipo-estanque.service';
 
 @Component({
@@ -30,8 +32,7 @@ export class EstanqueFormComponent implements OnInit, OnChanges {
       largo: [0, [Validators.required, Validators.min(1)]],
       ancho: [0, [Validators.required, Validators.min(1)]],
       profundidad: [0, [Validators.required, Validators.min(1)]],
-      tipoEstanqueId: [null, Validators.required],
-      estado: ['', Validators.required]
+      tipoEstanqueId: [null, Validators.required]
     });
   }
 

@@ -10,6 +10,7 @@ export class FiltroBusquedaComponent {
 
   @Input() searchControl!: FormControl;
   @Input() placeholder: string = '';
+  
   @Output() searchChange = new EventEmitter<string>();
   @Output() clear = new EventEmitter<void>();
 

@@ -4,9 +4,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Proveedor } from '../model/proveedor.model';
 import { TipoIdentificacion } from '../../tipo-identificacion/tipo-identificacion.model';
 import { TipoProveedor } from '../tipo-proveedor/tipo-proveedor.model';
+
 import { ProveedorService } from '../services/proveedor.service';
 import { TipoIdentificacionService } from '../../tipo-identificacion/tipo-identificacion.service';
 import { TipoProveedorService } from '../tipo-proveedor/tipo-proveedor.service';
+
 import { ProveedorValidators } from '../validators/proveedor-validators';
 
 @Component({

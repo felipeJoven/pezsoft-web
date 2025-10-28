@@ -6,37 +6,36 @@ import { FormControl } from '@angular/forms';
   templateUrl: './filtro-orden.component.html',
   styleUrls: ['./filtro-orden.component.css']
 })
-export class FiltroOrdenComponent {
-  
+export class FiltroOrdenComponent {  
+
   @Input() data: any[] = [];
-  @Input() campoTexto: string = '';
-  @Input() campoFecha: string = '';
-  @Input() resetSignal: boolean = false;
+  @Input() textField: string = '';
+  @Input() dateField: string = '';
+  
   @Output() sortedData = new EventEmitter<any[]>();
 
-
-  ordenControl = new FormControl('');
+  orderControl = new FormControl('');
 
   constructor() {
-    this.ordenControl.valueChanges.subscribe(value => this.ordenar(value));
+    this.orderControl.valueChanges.subscribe(value => this.sortColumn(value));
   }
 
-  ordenar(value: string | null) {
+  sortColumn(value: string | null) {
     if (!this.data || !value) return;
     let sorted = [...this.data];
 
     switch (value) {
       case 'az':
-        sorted.sort((a, b) => a[this.campoTexto]?.localeCompare(b[this.campoTexto]));
+        sorted.sort((a, b) => a[this.textField]?.localeCompare(b[this.textField]));
         break;
       case 'za':
-        sorted.sort((a, b) => b[this.campoTexto]?.localeCompare(a[this.campoTexto]));
+        sorted.sort((a, b) => b[this.textField]?.localeCompare(a[this.textField]));
         break;
       case 'fecha-asc':
-        sorted.sort((a, b) => new Date(a[this.campoFecha]).getTime() - new Date(b[this.campoFecha]).getTime());
+        sorted.sort((a, b) => new Date(a[this.dateField]).getTime() - new Date(b[this.dateField]).getTime());
         break;
       case 'fecha-desc':
-        sorted.sort((a, b) => new Date(b[this.campoFecha]).getTime() - new Date(a[this.campoFecha]).getTime());
+        sorted.sort((a, b) => new Date(b[this.dateField]).getTime() - new Date(a[this.dateField]).getTime());
         break;
     }
 

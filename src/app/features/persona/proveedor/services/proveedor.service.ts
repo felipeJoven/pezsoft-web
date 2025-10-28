@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
+
 import { Proveedor } from '../model/proveedor.model';
 
 @Injectable({
@@ -13,7 +14,13 @@ export class ProveedorService {
   constructor(private http: HttpClient) { }
 
   obtenerProveedores(filtro?: string): Observable<Proveedor[]> {
-    return this.http.get<Proveedor[]>(this.apiUrl);
+    const url = filtro ? `${this.apiUrl}?filtro=${filtro}` : this.apiUrl;
+    return this.http.get<Proveedor[]>(url).pipe(
+      catchError((e) => {
+        console.log("Error al filtrar proveedores: ", e);
+        return throwError(() => e);                
+      })
+    );
   }
   
   obtenerProvedorPorId(id: number): Observable<Proveedor> {

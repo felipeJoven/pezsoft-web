@@ -1,73 +1,115 @@
-<div class="container mt-4">    
-    <h1 class="mb-4 text-center">Lista de Proveedores</h1>
-    
-     <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap">
-    <div>
+<div class="container mt-4">
+  <h1 class="mb-4 text-center">Lista de Proveedores</h1>
+
+  <div class="d-flex align-items-center justify-content-between mb-3">
+
+    <div class="d-flex justify-content-between" style="min-width: 180px; margin-left: 150px;">
       <app-btn-agregar (click)="openModal()"></app-btn-agregar>
     </div>
 
-    <div class="flex-grow-1 d-flex justify-content-center">
-      <input type="text" class="form-control w-auto" style="min-width: 300px;" placeholder="Buscar especie..."
-        [formControl]="busquedaControl" />
-    </div>
+    <div *ngIf="!isLoading && isFiltering || proveedores.length !== 0"
+      class="d-flex flex-wrap align-items-center justify-content-center gap-2 flex-grow-1">
 
-    <div>
-      <select class="form-select w-auto" [formControl]="ordenControl">
-        <option value="" disabled selected>Ordenar por...</option>
-        <option value="nombreAsc">Nombre (A-Z)</option>
-        <option value="nombreDesc">Nombre (Z-A)</option>
-        <option value="fechaAsc">Fecha más antigua</option>
-        <option value="fechaDesc">Fecha más reciente</option>
-      </select>
+      <div class="flex-grow-1" style="min-width: 250px; max-width: 350px; margin-right: 20px;">
+        <app-filtro-busqueda [searchControl]="searchControl" (clear)="clearSearch()" placeholder="Buscar proveedor...">
+        </app-filtro-busqueda>
+      </div>
+
+      <div>
+        <app-btn-limpiar (click)="clearSearch()"></app-btn-limpiar>
+      </div>
+
+      <div *ngIf="!errorMessage" class="d-flex justify-content-end" style="min-width: 180px;">
+        <app-filtro-orden [data]="proveedores" textField="razonSocial" dateField="fechaCreacion"
+          (sortedData)="proveedores = $event">
+        </app-filtro-orden>
+      </div>
+
     </div>
   </div>
 
+  <div *ngIf="!isLoading && proveedores.length === 0 && !errorMessage" class="alert alert-info text-center mx-auto mt-3"
+    style="width: 50%;"> No existen proveedores registrados
+  </div>
 
-    <table>
+  <div class="table-container">
+    <ng-container *ngIf="proveedores.length > 0 && !errorMessage; else errorBlock">
+      <table>
+
         <thead>
+          <ng-container *ngIf="isLoading && !isFiltering; else columnas">
             <tr>
-                <th>Razón social</th>
-                <th>Tipo de identificación</th>
-                <th>Número de identificación</th>
-                <th>Tipo de proveedor</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Celular</th>
-                <th>Telefono</th>
-                <th>Correo</th>
-                <th>Dirección</th>
-                <th>Fecha creación</th>
-                <th>Acciones</th>
+              <th *ngFor="let _ of columns">
+                <div class="skeleton-header"></div>
+              </th>
             </tr>
+          </ng-container>
+
+          <ng-template #columnas>
+            <tr *ngIf="(!isLoading || isFiltering) && proveedoresPaginados">
+              <th>Razón social</th>
+              <th>Tipo de identificación</th>
+              <th>Número de identificación</th>
+              <th>Tipo de proveedor</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Celular</th>
+              <th>Telefono</th>
+              <th>Correo</th>
+              <th>Dirección</th>
+              <th>Fecha creación</th>
+              <th>Acciones</th>
+            </tr>
+          </ng-template>
         </thead>
+
         <tbody>
-            <tr *ngFor="let proveedor of proveedores">
-                <td>{{ proveedor.razonSocial }}</td>
-                <td>{{ proveedor.tipoIdentificacion }}</td>
-                <td>{{ proveedor.numeroIdentificacion }}</td>
-                <td>{{ proveedor.tipoProveedor }}</td>
-                <td>{{ proveedor.nombre }}</td>
-                <td>{{ proveedor.apellido }}</td>
-                <td>{{ proveedor.celular }}</td>
-                <td>{{ proveedor.telefono || 'N/A' }}</td>
-                <td>{{ proveedor.correo }}</td>
-                <td>{{ proveedor.direccion }}</td>
-                <td>{{ proveedor.fechaCreacion }}</td>
-                <td>
-                    <app-btn-editar (clickEvent)="openModal(proveedor)"></app-btn-editar>
-                    <app-btn-eliminar (clickEvent)="borrarProveedor(proveedor.id)"></app-btn-eliminar>
-                </td>
+          <ng-container *ngIf="isLoading; else filas">
+            <tr *ngFor="let _ of skeletonRows">
+              <td *ngFor="let _ of columns">
+                <div class="skeleton-body"></div>
+              </td>
             </tr>
+          </ng-container>
+
+          <ng-template #filas>
+            <tr *ngFor="let proveedor of proveedoresPaginados">
+              <td>{{ proveedor.razonSocial }}</td>
+              <td>{{ proveedor.tipoIdentificacion }}</td>
+              <td>{{ proveedor.numeroIdentificacion }}</td>
+              <td>{{ proveedor.tipoProveedor }}</td>
+              <td>{{ proveedor.nombre }}</td>
+              <td>{{ proveedor.apellido }}</td>
+              <td>{{ proveedor.celular }}</td>
+              <td>{{ proveedor.telefono || 'N/A' }}</td>
+              <td>{{ proveedor.correo }}</td>
+              <td>{{ proveedor.direccion }}</td>
+              <td>{{ proveedor.fechaCreacion }}</td>
+              <td>
+                <app-btn-editar (clickEvent)="openModal(proveedor)"></app-btn-editar>
+                <app-btn-eliminar (clickEvent)="deleteSuppliers(proveedor.id)"></app-btn-eliminar>
+              </td>
+            </tr>
+          </ng-template>
+
         </tbody>
-    </table>
+      </table>
+    </ng-container>
+
+    <ng-template #errorBlock>
+      <div *ngIf="!isLoading && errorMessage" class="alert alert-danger text-center mx-auto mt-2" style="width: 50%;">
+        {{ errorMessage }}
+      </div>
+    </ng-template>
+  </div>
+
+  <app-paginador [data]="proveedores" (paginatedDataChange)="onPageChange($event)"></app-paginador>
 </div>
 
-<app-modal *ngIf="showModal" [show]="showModal" [title]="selectedProveedor ? 'Editar proveedor' : 'Agregar proveedor'"
-    (closed)="closeModal()">
+<app-modal *ngIf="showModal" [show]="showModal"
+  [title]="proveedorSeleccionado ? 'Editar proveedor' : 'Agregar proveedor'" (closed)="closeModal()">
 
-    <app-proveedor-form [proveedor]="selectedProveedor" 
-      (guardado)="onSave()" 
-      (cancelar)="closeModal()">
-    </app-proveedor-form>
+  <app-proveedor-form [proveedor]="proveedorSeleccionado" (guardado)="onSave()" (cancelar)="closeModal()">
+  </app-proveedor-form>
 
 </app-modal>

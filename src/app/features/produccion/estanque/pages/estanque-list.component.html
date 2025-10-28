@@ -1,64 +1,117 @@
 <div class="container mt-4">
-    <div class="justify-content-between">
-        <div class="h1 bg-gray-500 border-3 border-gray-400">Lista de Estanques</div>
-    </div>
+    <h1 class="mb-4 text-center">Lista de Estanques</h1>
 
-    <app-btn-agregar (click)="openModal()"></app-btn-agregar>
+    <div class="d-flex align-items-center justify-content-between mb-3">
 
-    <div *ngIf="isLoading" class="text-center mt-3">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Cargando...</span>
+        <div class="d-flex justify-content-between" style="min-width: 180px; margin-left: 150px;">
+            <app-btn-agregar (click)="openModal()"></app-btn-agregar>
+        </div>
+
+        <div *ngIf="!isLoading && isFiltering || estanques.length !== 0"
+            class="d-flex flex-wrap align-items-center justify-content-center gap-2 flex-grow-1">
+
+            <div class="flex-grow-1" style="min-width: 250px; max-width: 350px; margin-right: 20px;">
+                <app-filtro-busqueda [searchControl]="searchControl" (clear)="clearSearch()"
+                    placeholder="Buscar estanque...">
+                </app-filtro-busqueda>
+            </div>
+
+            <div>
+                <app-btn-limpiar (click)="clearSearch()"></app-btn-limpiar>
+            </div>
+
+            <div *ngIf="!errorMessage" class="d-flex justify-content-end" style="min-width: 180px;">
+                <app-filtro-orden [data]="estanques" textField="estanque" dateField="fechaCreacion"
+                    (sortedData)="estanques = $event">
+                </app-filtro-orden>
+            </div>
+
         </div>
     </div>
 
-    <div *ngIf="!isLoading && estanques.length === 0 && !errorMessage"
-        class="alert alert-info text-center mx-auto mt-3 text-center" style="width: 50%;">
-        No existen estanques registrados
+    <div *ngIf="!isLoading && estanques.length === 0 && !errorMessage" class="alert alert-info text-center mx-auto mt-3"
+        style="width: 50%;"> No existen estanques registrados
     </div>
 
-    <table *ngIf="!isLoading && estanques.length > 0">
-        <thead>
-            <tr>
-                <th>Tipo de estanque</th>
-                <th>Nombre del estanque</th>
-                <th>Coordenadas</th>
-                <th>Largo</th>
-                <th>Ancho</th>
-                <th>Área</th>
-                <th>Profundidad</th>
-                <th>Estado</th>
-                <th>Fecha de creación</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let estanque of estanques">
-                <td>{{ estanque.tipoEstanque }}</td>
-                <td>{{ estanque.estanque }}</td>
-                <td>{{ estanque.coordenadas }}</td>
-                <td>{{ estanque.largo | comaDecimal }} mts</td>
-                <td>{{ estanque.ancho | comaDecimal }} mts</td>
-                <td>{{ estanque.area | comaDecimal }} m<sup>2</sup></td>
-                <td>{{ estanque.profundidad | comaDecimal }} mts</td>
-                <td>
-                    <span class="badge" [ngClass]="estanque.estado ? 'bg-danger' : 'bg-success'">
-                        {{ estanque.estado ? 'Ocupado' : 'Disponible' }}
-                    </span>
-                </td>
-                <td>{{ estanque.fechaCreacion }}</td>
-                <td>
-                    <app-btn-editar (clickEvent)="openModal(estanque)"></app-btn-editar>
-                    <app-btn-eliminar (clickEvent)="borrarEstanque(estanque.id)"></app-btn-eliminar>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="table-container">
+        <ng-container *ngIf="estanques.length > 0 && !errorMessage; else errorBlock">
+            <table>
+
+                <thead>
+                    <ng-container *ngIf="isLoading && !isFiltering; else columnas">
+                        <tr>
+                            <th *ngFor="let _ of columns">
+                                <div class="skeleton-header"></div>
+                            </th>
+                        </tr>
+                    </ng-container>
+
+                    <ng-template #columnas>
+                        <tr *ngIf="(!isLoading || isFiltering) && estanquesPaginados">
+                            <th>Tipo de estanque</th>
+                            <th>Nombre del estanque</th>
+                            <th>Coordenadas</th>
+                            <th>Largo</th>
+                            <th>Ancho</th>
+                            <th>Área</th>
+                            <th>Profundidad</th>
+                            <th>Estado</th>
+                            <th>Fecha de creación</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </ng-template>
+                </thead>
+
+                <tbody>
+                    <ng-container *ngIf="isLoading; else filas">
+                        <tr *ngFor="let _ of skeletonRows">
+                            <td *ngFor="let _ of columns">
+                                <div class="skeleton-body"></div>
+                            </td>
+                        </tr>
+                    </ng-container>
+
+                    <ng-template #filas>
+                        <tr *ngFor="let estanque of estanquesPaginados">
+                            <td>{{ estanque.tipoEstanque }}</td>
+                            <td>{{ estanque.estanque }}</td>
+                            <td>{{ estanque.coordenadas }}</td>
+                            <td>{{ estanque.largo | comaDecimal }} mts</td>
+                            <td>{{ estanque.ancho | comaDecimal }} mts</td>
+                            <td>{{ estanque.area | comaDecimal }} m<sup>2</sup></td>
+                            <td>{{ estanque.profundidad | comaDecimal }} mts</td>
+                            <td>
+                                <span class="badge" [ngClass]="estanque.estado ? 'bg-danger' : 'bg-success'">
+                                    {{ estanque.estado ? 'Ocupado' : 'Disponible' }}
+                                </span>
+                            </td>
+                            <td>{{ estanque.fechaCreacion }}</td>
+                            <td>
+                                <app-btn-editar (clickEvent)="openModal(estanque)"></app-btn-editar>
+                                <app-btn-eliminar (clickEvent)="deletePonds(estanque.id)"></app-btn-eliminar>
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                </tbody>
+            </table>
+        </ng-container>
+
+        <ng-template #errorBlock>
+            <div *ngIf="!isLoading && errorMessage" class="alert alert-danger text-center mx-auto mt-2"
+                style="width: 50%;">
+                {{ errorMessage }}
+            </div>
+        </ng-template>
+    </div>
+
+    <app-paginador [data]="estanques" (paginatedDataChange)="onPageChange($event)"></app-paginador>
 </div>
 
-<app-modal *ngIf="showModal" [show]="showModal" [title]="selectedEstanque ? 'Editar estanque' : 'Agregar estanque'"
+<app-modal *ngIf="showModal" [show]="showModal" [title]="estanqueSeleccionado ? 'Editar estanque' : 'Agregar estanque'"
     (closed)="closeModal()">
 
-    <app-estanque-form [estanque]="selectedEstanque" (guardado)="onSave()" (cancelar)="closeModal()">
+    <app-estanque-form [estanque]="estanqueSeleccionado" (guardado)="onSave()" (cancelar)="closeModal()">
     </app-estanque-form>
 
 </app-modal>
